@@ -46,10 +46,10 @@ function Home() {
   const [mintAmount, setMintAmount] = useState(0);
   const [displayCost, setDisplayCost] = useState(0);
   const [state, setState] = useState(1);
-  const [nftCost, setNftCost] = useState(0.0315);
+  const [nftCost, setNftCost] = useState(2.0);
   const [canMintWL, setCanMintWL] = useState(false);
   const [disable, setDisable] = useState(false);
-  const [max, setMax] = useState(10);
+  const [max, setMax] = useState(1);
   const [count, setCount] = React.useState(2);
   const [loading, setLoading] = useState(true);
   const [CONFIG, SET_CONFIG] = useState({
@@ -329,12 +329,17 @@ function Home() {
                       <div className="text-lg font-semibold text-white">
                         Total
                       </div>
-                      <div>0.08 ETH</div>
+                      <div>{displayCost}</div>
                     </div>
                   </li>
                   <li>
                     <div>
                       <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dispatch(connectWallet());
+                          getData();
+                        }}
                         type="button"
                         className="px-btn py-2 shadow-sm rounded-lg text-[1rem] bg-gradient-to-r from-secondary to-primary text-white hover:text-white focus:outline-none transition duration-200 transform hover:scale-105 w-full font-semibold"
                       >
