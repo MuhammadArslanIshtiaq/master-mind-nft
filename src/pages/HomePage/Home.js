@@ -76,7 +76,7 @@ function Home() {
     setLoading(true);
     // setDisable(true);
     blockchain.smartContract.methods
-      .mint(mintAmount)
+      .mint()
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -133,10 +133,6 @@ function Home() {
         .maxMintAmount()
         .call();
       setTotalSupply(totalSupply);
-      let currentState = await blockchain.smartContract.methods
-        .currentState()
-        .call();
-      setState(currentState);
     }
   };
 
@@ -153,19 +149,19 @@ function Home() {
     const abi = await abiResponse.json();
     var contract = new Contract(
       abi,
-      "0xC64B5346D729cbe73456f1197dD63963e67c3837"
+      "0x7FA91309220b85d4f712D281AFa33280533f21B6"
     );
     contract.setProvider(web3.currentProvider);
-    
+
     // Get Total Supply
     const totalSupply = await contract.methods.maxMintAmount().call();
     setTotalSupply(totalSupply);
 
-      let puCost = await contract.methods.cost().call();
-      setDisplayCost(parseFloat(web3.utils.fromWei(puCost)).toFixed(2));
-      setNftCost(web3.utils.fromWei(puCost));
-      setMax(1);
-    
+    let puCost = await contract.methods.cost().call();
+    setDisplayCost(parseFloat(web3.utils.fromWei(puCost)).toFixed(2));
+    setNftCost(web3.utils.fromWei(puCost));
+    setMax(1);
+
   };
 
   const getConfig = async () => {
@@ -251,25 +247,50 @@ function Home() {
                       <div className="text-lg font-semibold text-white">
                         Total
                       </div>
-                      <div>{displayCost}</div>
+                      <div>{displayCost} ETH</div>
                     </div>
                   </li>
                   <li>
                     <div>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          dispatch(connectWallet());
-                          getData();
-                        }}
-                        type="button"
-                        className="px-btn py-2 shadow-sm rounded-lg text-[1rem] bg-gradient-to-r from-secondary to-primary text-white hover:text-white focus:outline-none transition duration-200 transform hover:scale-105 w-full font-semibold"
-                      >
-                        Connect Wallet
-                      </button>
+                      {blockchain.account !== "" && blockchain.smartContract !== null && blockchain.errorMsg === "" ? (
+                        <button
+                          disabled={disable}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            claimNFTs();
+                            getData();
+                          }}
+                          type="button"
+                          className="px-btn py-2 shadow-sm rounded-lg text-[1rem] bg-gradient-to-r from-secondary to-primary text-white hover:text-white focus:outline-none transition duration-200 transform hover:scale-105 w-full font-semibold"
+                        >
+                          {claimingNft ? "Confirm Transaction in Wallet" : "Mint"}
+                        </button>
+
+                      ) : (
+
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            dispatch(connectWallet());
+                            getData();
+                          }}
+                          type="button"
+                          className="px-btn py-2 shadow-sm rounded-lg text-[1rem] bg-gradient-to-r from-secondary to-primary text-white hover:text-white focus:outline-none transition duration-200 transform hover:scale-105 w-full font-semibold"
+                        >
+                          Connect Wallet
+                        </button>
+
+                      )}
+                      {blockchain.account === null && blockchain.errorMsg === "" ? (
                       <i className="px-btn text-[0.7rem] text-center block mt-2 text-white italic">
                         Make sure your MetaMask wallet is connected
                       </i>
+                      ) :(
+                        <i className="px-btn text-[0.7rem] text-center block mt-2 text-white italic">
+                        {feedback}
+                      </i>
+                      )}
+
                     </div>
                     <div className="bbsw" />
                     <h4 className="px-btn text-[0.75rem] sm:text-[0.9rem] font-semibold text-center mb-2 text-white	">

@@ -29,9 +29,8 @@ export default function NavbarPrimary() {
   return (
     <Disclosure
       as="nav"
-      className={`sticky w-full top-0 z-40 transition-all duration-300 ${
-        navbar && "py-2 bg-black shadow-sm shadow-gray-400"
-      }`}
+      className={`sticky w-full top-0 z-40 transition-all duration-300 ${navbar && "py-2 bg-black shadow-sm shadow-gray-400"
+        }`}
     >
       {({ open }) => (
         <>
@@ -68,7 +67,7 @@ export default function NavbarPrimary() {
                             : "text-white hover:text-primary font-normal text-[0.9rem]"
                         }
                       >
-                        {item.name}
+                       
                       </NavLink>
                     ))}
                   </div>
@@ -135,14 +134,7 @@ export default function NavbarPrimary() {
                   </a>
                 </div>
                 {/* == */}
-                <div className="hidden lg:block space-x-4 ml-4">
-                  <button
-                    type="button"
-                    className="px-8 px-btn shadow-sm rounded-full text-[0.9rem] bg-gradient-to-r from-[#30223b] to-[#521523] text-white hover:text-white focus:outline-none transition duration-200 transform hover:scale-105 font-medium"
-                  >
-                    Connect Wallet
-                  </button>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -160,17 +152,10 @@ export default function NavbarPrimary() {
                       : "text-gray-300 hover:bg-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium"
                   }
                 >
-                  {item.name}
+                 
                 </Disclosure.Button>
               ))}
-              <Disclosure.Button as="div">
-                <button
-                  type="button"
-                  className="mt-3 px-8 px-btn shadow-sm rounded-lg text-[0.9rem] bg-gradient-to-r from-[#30223b] to-[#521523] text-white hover:text-white focus:outline-none transition duration-200 transform hover:scale-105 font-medium w-full"
-                >
-                  Connect Wallet
-                </button>
-              </Disclosure.Button>
+             
               <Disclosure.Button as="div">
                 <div className="mt-3 flex items-center space-x-1">
                   <a

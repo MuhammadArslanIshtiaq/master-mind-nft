@@ -144,6 +144,7 @@ export const connectWallet = () => {
       const networkId = await provider.request({
         method: "net_version",
       });
+      
       if (networkId == CONFIG.NETWORK_ID_WALLET || networkId == CONFIG.NETWORK.ID) {
 
         const SmartContractObj = new Web3EthContract(
