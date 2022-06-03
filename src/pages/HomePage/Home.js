@@ -242,7 +242,7 @@ function Home() {
       <div className=" bbsw2"></div>
 
       <section
-        className="relative z-20 bg-no-repeat bg-bottom bg-heroD"
+        className="relative bg-no-repeat bg-bottom bg-heroD"
         style={{ backgroundSize: "100% 54%" }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 h-full py-10 md:py-8 relative">

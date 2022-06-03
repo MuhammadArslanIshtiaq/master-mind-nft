@@ -82,3 +82,7 @@ body {
   padding-bottom:0.8rem !important;
 }
 
+.web3modal-modal-card{
+  z-index: 999 !important;
+}
+
