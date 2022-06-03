@@ -52,7 +52,7 @@ export default function NavbarPrimary() {
                 <div className="flex-shrink-0 flex items-center animated fadeInLeftBig">
                   <img
                     className="block h-11 w-auto"
-                    src="/assets/images/Logo.png"
+                    src="assets/images/logo.png"
                     alt="Workflow"
                   />
                 </div>

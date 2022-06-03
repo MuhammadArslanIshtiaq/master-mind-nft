@@ -12,14 +12,8 @@ import { MinusIcon, PlusIcon } from "@heroicons/react/outline";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 var Web3 = require("web3");
 var Contract = require("web3-eth-contract");
-const { MerkleTree } = require("merkletreejs");
-const keccak256 = require("keccak256");
 
-// Whitelist MerkleTree
-// const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
-// const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
-// const rootHash = merkleTree.getRoot();
-// console.log("Whitelist Merkle Tree\n", merkleTree.toString());
+
 
 function Home() {
   const list = [
@@ -42,8 +36,7 @@ function Home() {
   const [mintDone, setMintDone] = useState(false);
   const [supply, setTotalSupply] = useState(0);
   const [feedback, setFeedback] = useState("");
-  const [statusAlert, setStatusAlert] = useState("");
-  const [mintAmount, setMintAmount] = useState(0);
+  const [mintAmount, setMintAmount] = useState(1);
   const [displayCost, setDisplayCost] = useState(0);
   const [state, setState] = useState(1);
   const [nftCost, setNftCost] = useState(2.0);
@@ -62,7 +55,7 @@ function Home() {
     },
     NFT_NAME: "",
     SYMBOL: "",
-    MAX_SUPPLY: 10,
+    MAX_SUPPLY: 0,
     WEI_COST: 0,
     DISPLAY_COST: 0,
     GAS_LIMIT: 0,
@@ -102,7 +95,7 @@ function Home() {
         setFeedback(`Congratulation, your mint is successful.`);
         setClaimingNft(false);
         blockchain.smartContract.methods
-          .totalSupply()
+          .maxMintAmount()
           .call()
           .then((res) => {
             setTotalSupply(res);
@@ -137,7 +130,7 @@ function Home() {
     if (blockchain.account !== "" && blockchain.smartContract !== null) {
       dispatch(fetchData(blockchain.account));
       const totalSupply = await blockchain.smartContract.methods
-        .totalSupply()
+        .maxMintAmount()
         .call();
       setTotalSupply(totalSupply);
       let currentState = await blockchain.smartContract.methods
@@ -149,7 +142,7 @@ function Home() {
 
   const getDataWithAlchemy = async () => {
     const web3 = createAlchemyWeb3(
-      "https://polygon-mumbai.g.alchemy.com/v2/tAaDBP--_Zf2g2FPCYBhKhs6tlOXeu4W"
+      "https://eth-rinkeby.alchemyapi.io/v2/plu1GBcPST6sjcu5SVXfmZD2x_xLH68s"
     );
     const abiResponse = await fetch("/config/abi.json", {
       headers: {
@@ -160,42 +153,19 @@ function Home() {
     const abi = await abiResponse.json();
     var contract = new Contract(
       abi,
-      "0x4231f82188b501e44127eba89fe8834182b53197"
+      "0xC64B5346D729cbe73456f1197dD63963e67c3837"
     );
     contract.setProvider(web3.currentProvider);
+    
     // Get Total Supply
-    const totalSupply = await contract.methods.totalSupply().call();
+    const totalSupply = await contract.methods.maxMintAmount().call();
     setTotalSupply(totalSupply);
 
-    // Get Contract State
-    let currentState = await contract.methods.currentState().call();
-    setState(currentState);
-    console.log(currentState);
-
-    // Set Price and Max According to State
-
-    if (currentState == 0) {
-      setStatusAlert("MINT NOT LIVE YET!");
-      setDisable(true);
-      setDisplayCost(0.0);
-      setMax(0);
-      // } else if (currentState == 1) {
-      //   let wlCost = await contract.methods.costWL().call();
-      //   setDisplayCost(web3.utils.fromWei(wlCost));
-      //   setNftCost(web3.utils.fromWei(wlCost));
-      //   setStatusAlert("WHITELIST IS NOW LIVE!");
-      //   setFeedback("Are you Whitelisted Member?");
-
-      //   let wlMax = await contract.methods.maxMintAmountWL().call();
-      //   setMax(wlMax);
-    } else {
       let puCost = await contract.methods.cost().call();
-      setDisplayCost(web3.utils.fromWei(puCost));
+      setDisplayCost(parseFloat(web3.utils.fromWei(puCost)).toFixed(2));
       setNftCost(web3.utils.fromWei(puCost));
-      setStatusAlert("Public Mint is Live");
-      let puMax = await contract.methods.maxMintAmountPublic().call();
-      setMax(10);
-    }
+      setMax(1);
+    
   };
 
   const getConfig = async () => {
@@ -269,59 +239,11 @@ function Home() {
                     </div>
                   </li>
                   <li className="bbw pb-4">
-                    <div className="flex justify-between text-white">
-                      <div className="text-lg font-semibold text-white">
-                        Balance
-                      </div>
-                      <div>
-                        {CONFIG.MAX_SUPPLY - supply} / {CONFIG.MAX_SUPPLY}
-                      </div>
-                    </div>
-                  </li>
-                  <li className="bbw pb-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center text-white">
                       <div className="text-lg font-semibold text-white">
                         Amount
                       </div>
-                      <div>
-                        <div className="flex items-center gap-6">
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              decrementMintAmount();
-                            }}
-                            type="button"
-                            className="transition-all duration-200 transform active:scale-105 text-white"
-                          >
-                            <MinusIcon className="w-4 h-4" />
-                          </button>
-                          <span className="text-[1.25rem] font-semibold text-white">
-                            {mintAmount}
-                          </span>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              incrementMintAmount();
-                            }}
-                            type="button"
-                            className="transition-all duration-200 transform active:scale-105 text-white"
-                          >
-                            <PlusIcon className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                      <div>
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            maxNfts();
-                          }}
-                          type="button"
-                          className=" bg-white text-black transition-all duration-200 transform active:scale-105 font-semibold p-2 rounded-lg"
-                        >
-                          Max
-                        </button>
-                      </div>
+                      <div>{CONFIG.MAX_LIMIT_MINT}</div>
                     </div>
                   </li>
                   <li className="bbw pb-4">
