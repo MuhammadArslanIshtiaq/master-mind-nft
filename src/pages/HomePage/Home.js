@@ -18,15 +18,18 @@ var Contract = require("web3-eth-contract");
 function Home() {
   const list = [
     {
-      text: `Ongoing access to monthly mastermind sessions where the focus is on accomplishment through collaboration.`,
+      text: `Gain direct access to members who are CELEBRITIES , MILLIONAIRES, AND SOCIAL ICONS!`,
     },
-    { text: `We meet the second Tuesday of each month at 1 pm PST ` },
+    { text: `This group is ready to pass the torch of knowledge  and connect you with a network of people  that others only dream about connecting to!` },
     {
-      text: `Gain direct access and connections to people who have accomplished what others are only ‘talking’ about.`,
+      text: `Ongoing access to monthly Mastermind sessions where the focus is on accomplishment through powerful amazing collaborations of members.`,
     },
     {
-      text: `Our members are celebrities, millionaires, and social media icons who are ready to pass the torch of knowledge so that you too - may create a life of abundance and security that few can only imagine.`,
+      text: `Meetings will happen the second Tuesday of each month at 1 pm via a secret magic portal platform. Once ownership is held of the Mastermind Group NFT you will be provided with an unlockable content link with directions to access this phenomenal group .`,
     },
+    {
+      text: `By being an owner/ holder of the MASTERMIND GROUP NFT-  You too, can create a life of abundance and security that few can only dream and imagine , LFG!`
+    }
   ];
 
   const dispatch = useDispatch();
@@ -282,13 +285,13 @@ function Home() {
 
                       )}
                       {blockchain.account === null && blockchain.errorMsg === "" ? (
-                      <i className="px-btn text-[0.7rem] text-center block mt-2 text-white italic">
-                        Make sure your MetaMask wallet is connected
-                      </i>
-                      ) :(
                         <i className="px-btn text-[0.7rem] text-center block mt-2 text-white italic">
-                        {feedback}
-                      </i>
+                          Make sure your MetaMask wallet is connected
+                        </i>
+                      ) : (
+                        <i className="px-btn text-[0.7rem] text-center block mt-2 text-white italic">
+                          {feedback}
+                        </i>
                       )}
 
                     </div>
@@ -333,11 +336,14 @@ function Home() {
                 <div className="text-center mt-14">
                   <div className="w-[100%] md:w-[45%] mx-auto relative">
                     <span className="absolute top-[50%] left-[50%] transform translate-y-[-50%] translate-x-[-50%] shadow-bg-primary" />
-                    <img
+                    <video
                       className="block h-full w-full relative"
-                      src="/assets/videos/card-video-unscreen.gif"
-                      alt=".."
-                    />
+                      loop
+                      muted
+                      autoPlay
+                      controls={false} id="myVideo">
+                      <source src={"assets/videos/card-video.mp4"} type="video/mp4" />
+                    </video>
                   </div>
                 </div>
               </div>
