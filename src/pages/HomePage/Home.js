@@ -152,7 +152,7 @@ function Home() {
     const abi = await abiResponse.json();
     var contract = new Contract(
       abi,
-      "0x7FA91309220b85d4f712D281AFa33280533f21B6"
+      "0x8ddfB8AE536dA9d8565F9a2E1136724505800993"
     );
     contract.setProvider(web3.currentProvider);
 
