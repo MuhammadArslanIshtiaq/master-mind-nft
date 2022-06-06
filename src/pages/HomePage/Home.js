@@ -341,7 +341,7 @@ function Home() {
                       loop
                       muted
                       autoPlay
-                      controls={false} id="myVideo">
+                      controls>
                       <source src={"assets/videos/card-video.mp4"} type="video/mp4" />
                     </video>
                   </div>
