@@ -67,6 +67,10 @@ function Home() {
     SHOW_BACKGROUND: false,
   });
 
+  const openLink = () => {
+    window.open("https://mastermindgroup.com/nft","_blank");
+  }
+
   const claimNFTs = () => {
     let cost = nftCost;
     cost = Web3.utils.toWei(String(cost), "ether");
@@ -301,7 +305,7 @@ function Home() {
                     </h4>
                     <div>
                       <button
-                        type="button"
+                       onClick={openLink}
                         className="px-btn  py-2 shadow-sm rounded-lg text-[1rem] bg-gradient-to-r from-secondary to-primary text-white hover:text-white focus:outline-none transition duration-200 transform hover:scale-105 w-full font-semibold"
                       >
                         Get Your NFT with Card
