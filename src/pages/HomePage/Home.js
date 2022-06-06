@@ -341,6 +341,7 @@ function Home() {
                       loop
                       muted
                       autoPlay
+                      playsinline
                       controls>
                       <source src={"assets/videos/card-video.mp4"} type="video/mp4" />
                     </video>
